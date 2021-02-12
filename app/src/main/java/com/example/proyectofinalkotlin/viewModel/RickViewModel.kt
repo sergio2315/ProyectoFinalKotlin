@@ -3,6 +3,7 @@ package com.example.proyectofinalkotlin.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.proyectofinalkotlin.model.local.RickDataBase
 import com.example.proyectofinalkotlin.model.pojo.RickMorty
@@ -17,10 +18,15 @@ class RickViewModel(application: Application): AndroidViewModel(application) {
         val dao = RickDataBase.getDataBase(application).getRickDao()
         repository = RickMortyRepository(dao)
         viewModelScope.launch {
-            repository.getRickMortyWithCourrutines()
+            repository.getRickMortyWithCourutines()
         }
-        //liveDataFromDB = repository.liveDataDB
     }
     fun getRickList(): LiveData<List<RickMorty>> = repository.liveDataDB
+
+    private val selectedCharacter: MutableLiveData<RickMorty> = MutableLiveData()
+    fun selected(rickMorty: RickMorty?){
+        selectedCharacter.value = rickMorty
+    }
+    fun selectedItem(): LiveData<RickMorty> = selectedCharacter
 
 }

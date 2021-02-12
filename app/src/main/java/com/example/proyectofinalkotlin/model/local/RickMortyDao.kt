@@ -9,10 +9,14 @@ import com.example.proyectofinalkotlin.model.pojo.RickMorty
 @Dao
 interface RickMortyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllEpisodes(Episodeslist: List<RickMorty>)
+    suspend fun insertAllEpisodes(Episodeslist: List<RickMorty>)
+   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllEpisodes(Episodeslist: RickMorty)*/
 
+    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllImagesRickMorty(Imagelist: List<RickMorty>)*/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllImagesRickMorty(Imagelist: List<RickMorty>)
+    fun insertAllImagesRickMorty(Imagelist: RickMorty)
 
     @Query("SELECT * FROM rickMorty_table")
     fun getAllRickMortyBD(): LiveData<List<RickMorty>>
