@@ -39,12 +39,28 @@ class FirstFragment : Fragment() {
             it?.let {
                 Log.d("listado",it.toString())
                 adapter.update(it)
+                binding.btnFavorites.setOnClickListener {
+                    Toast.makeText(context, "Ver favoritos", Toast.LENGTH_LONG).show()
+                }
             }
         })
         adapter.selectedItem().observe(viewLifecycleOwner, Observer {
             it?.let {
                 viewModel.selected(it)
                 findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            }
+        })
+        adapter.selectedFavorite().observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it.favorite){
+                    it.favorite= false
+                    viewModel.updateFavImages(it)
+                    Toast.makeText(context, "Eliminado de favoritos", Toast.LENGTH_LONG).show()
+                }else{
+                    it.favorite= true
+                    viewModel.updateFavImages(it)
+                    Toast.makeText(context, "Añadido a favoritos", Toast.LENGTH_LONG).show()
+                }
             }
         })
     }

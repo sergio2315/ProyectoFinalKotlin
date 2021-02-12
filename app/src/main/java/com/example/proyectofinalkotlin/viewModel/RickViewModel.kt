@@ -29,4 +29,9 @@ class RickViewModel(application: Application): AndroidViewModel(application) {
     }
     fun selectedItem(): LiveData<RickMorty> = selectedCharacter
 
+    fun updateFavImages(rickMorty: RickMorty?) = viewModelScope.launch  {
+        if (rickMorty != null) {
+            repository.updateFavImages(rickMorty)
+        }
+    }
 }

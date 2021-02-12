@@ -13,4 +13,5 @@ data class RickMorty(@PrimaryKey val id: Int,
                      @SerializedName("species")
                      val species: String,
                      @SerializedName("status")
-                     val status: String)
+                     val status: String,
+                     var favorite: Boolean = false)

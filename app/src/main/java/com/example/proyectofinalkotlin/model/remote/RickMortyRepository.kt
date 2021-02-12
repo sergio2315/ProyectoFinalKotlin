@@ -9,9 +9,6 @@ class RickMortyRepository(private val dao : RickMortyDao) {
     private val services= RetrofitClient.retrofitInstance()
     val liveDataDB = dao.getAllRickMortyBD()
 
-    /*fun converter(listCharacters: ResponseCharacter): List<ResponseCharacter>{
-        return listCharacters?.results.map { ResponseCharacter(results = it) }
-    }*/
     fun converter(listCharacters: ResponseCharacter):List<RickMorty>{
         val character: MutableList<RickMorty> = mutableListOf<RickMorty>()
         listCharacters.results.map { character.add(RickMorty
@@ -26,12 +23,16 @@ class RickMortyRepository(private val dao : RickMortyDao) {
             when(response.isSuccessful){
                 true->response.body()?.let {
                     //aca se inserta en la base de datos
-                    dao.insertAllEpisodes(converter(it))
+                    dao.insertAllCharacters(converter(it))
                 }
                 false -> Log.d("ERROR", "${response.code()}: ${response.errorBody()} ")
             }
         }catch (t: Throwable){
             Log.e("ERROR CORRUTINA",t.message.toString())
         }
+    }
+    // Actualizar datos
+    suspend fun updateFavImages(rickMorty: RickMorty) {
+        dao.updateRickMorty(rickMorty)
     }
 }
