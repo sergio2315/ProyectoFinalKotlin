@@ -18,10 +18,10 @@ class SecondFragment : Fragment() {
     private lateinit var binding: FragmentSecondBinding
     private val viewModel: RickViewModel by activityViewModels()
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSecondBinding.inflate(inflater,container,false)
+        binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,9 +31,9 @@ class SecondFragment : Fragment() {
         viewModel.selectedItem().observe(viewLifecycleOwner, Observer {
             it?.let {
                 Glide.with(binding.imageView2).load(it.image).into(binding.imageView2)
-                binding.textView1.text = "Nombre: "+it.name
-                binding.textView2.text = "Especie: "+it.species
-                binding.textView3.text = "Estatus: "+it.status
+                binding.textView1.text = "Nombre: " + it.name
+                binding.textView2.text = "Especie: " + it.species
+                binding.textView3.text = "Estatus: " + it.status
             }
         })
         view.findViewById<Button>(R.id.btnReturn).setOnClickListener {

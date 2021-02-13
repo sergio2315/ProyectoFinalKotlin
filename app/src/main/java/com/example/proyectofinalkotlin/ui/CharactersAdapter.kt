@@ -10,30 +10,32 @@ import com.bumptech.glide.Glide
 import com.example.proyectofinalkotlin.databinding.RickItemListBinding
 import com.example.proyectofinalkotlin.model.pojo.RickMorty
 
-class EpisodesAdapter:RecyclerView.Adapter<EpisodesAdapter.EpisodesAdapterVH>() {
+class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersAdapterVH>() {
     private var listCharacter = listOf<RickMorty>()
     private val selectedCharacter = MutableLiveData<RickMorty>()
     private val selectedFav = MutableLiveData<RickMorty>()
 
     fun selectedFavorite() = selectedFav
     fun selectedItem() = selectedCharacter
-    fun update(list: List<RickMorty>){
+    fun update(list: List<RickMorty>) {
         listCharacter = list
         notifyDataSetChanged()
     }
-    inner class EpisodesAdapterVH(private val binding: RickItemListBinding)
-        : RecyclerView.ViewHolder(binding.root),View.OnClickListener,View.OnLongClickListener{
-        fun bind(rickMorty: RickMorty){
+
+    inner class CharactersAdapterVH(private val binding: RickItemListBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
+        fun bind(rickMorty: RickMorty) {
             Glide.with(binding.imageView).load(rickMorty.image).centerCrop().into(binding.imageView)
             itemView.setOnClickListener(this)
 
-            if (rickMorty.favorite){
+            if (rickMorty.favorite) {
                 binding.ivFavorite.setColorFilter(Color.RED)
-            }else{
+            } else {
                 binding.ivFavorite.setColorFilter(Color.GRAY)
             }
             itemView.setOnLongClickListener(this)
         }
+
         override fun onClick(v: View?) {
             selectedItem().value = listCharacter[adapterPosition]
         }
@@ -44,12 +46,14 @@ class EpisodesAdapter:RecyclerView.Adapter<EpisodesAdapter.EpisodesAdapterVH>() 
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodesAdapterVH {
-        return EpisodesAdapterVH(RickItemListBinding.inflate(LayoutInflater.from(parent.context)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersAdapterVH {
+        return CharactersAdapterVH(RickItemListBinding.inflate(LayoutInflater.from(parent.context)))
     }
-    override fun onBindViewHolder(holder: EpisodesAdapterVH, position: Int) {
+
+    override fun onBindViewHolder(holder: CharactersAdapterVH, position: Int) {
         val episodes = listCharacter[position]
         holder.bind(episodes)
     }
+
     override fun getItemCount(): Int = listCharacter.size
 }

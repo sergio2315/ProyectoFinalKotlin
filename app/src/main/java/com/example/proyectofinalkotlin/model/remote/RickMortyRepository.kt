@@ -5,32 +5,43 @@ import com.example.proyectofinalkotlin.model.local.RickMortyDao
 import com.example.proyectofinalkotlin.model.pojo.ResponseCharacter
 import com.example.proyectofinalkotlin.model.pojo.RickMorty
 
-class RickMortyRepository(private val dao : RickMortyDao) {
-    private val services= RetrofitClient.retrofitInstance()
+class RickMortyRepository(private val dao: RickMortyDao) {
     val liveDataDB = dao.getAllRickMortyBD()
+    val listFavImages = dao.getAllFavoritesImages()
 
-    fun converter(listCharacters: ResponseCharacter):List<RickMorty>{
+    fun converter(listCharacters: ResponseCharacter): List<RickMorty> {
         val character: MutableList<RickMorty> = mutableListOf<RickMorty>()
-        listCharacters.results.map { character.add(RickMorty
-        (id = it.id, name = it.name,image = it.image,species = it.species,status = it.status)) }
+        listCharacters.results.map {
+            character.add(
+                RickMorty
+                    (
+                    id = it.id,
+                    name = it.name,
+                    image = it.image,
+                    species = it.species,
+                    status = it.status
+                )
+            )
+        }
         return character
     }
 
     suspend fun getRickMortyWithCourutines() {
-        Log.d("REPOSITORY","Utilizando corrutinas")
+        Log.d("REPOSITORY", "Utilizando corrutinas")
         try {
             val response = RetrofitClient.retrofitInstance().fetchImagesRickMortyCoroutines()
-            when(response.isSuccessful){
-                true->response.body()?.let {
+            when (response.isSuccessful) {
+                true -> response.body()?.let {
                     //aca se inserta en la base de datos
                     dao.insertAllCharacters(converter(it))
                 }
                 false -> Log.d("ERROR", "${response.code()}: ${response.errorBody()} ")
             }
-        }catch (t: Throwable){
-            Log.e("ERROR CORRUTINA",t.message.toString())
+        } catch (t: Throwable) {
+            Log.e("ERROR CORRUTINA", t.message.toString())
         }
     }
+
     // Actualizar datos
     suspend fun updateFavImages(rickMorty: RickMorty) {
         dao.updateRickMorty(rickMorty)
